@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="119dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="#00A2BCBA"
+        android:gravity="center"
+        android:hapticFeedbackEnabled="true"
+        android:text="Weather Forecast App"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="94dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
+        android:text="Show Weather"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="667dp" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="365dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="#97251212"
+
+        android:gravity="center"
+        android:hint="Enter any City"
+        android:inputType="text"
+        android:textColorHint="@color/white"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="439dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
