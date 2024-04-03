@@ -47,7 +47,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="#97251212"
+        android:background="#AB120400"
 
         android:gravity="center"
         android:hint="Enter any City"
