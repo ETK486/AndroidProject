@@ -5,26 +5,31 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img"
+    android:background="@drawable/backg"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="119dp"
+        android:layout_width="415dp"
+        android:layout_height="83dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="#00A2BCBA"
+        android:fontFamily="monospace"
         android:gravity="center"
         android:hapticFeedbackEnabled="true"
         android:text="Weather Forecast App"
-        android:textColor="@color/black"
-        android:textSize="50sp"
+        android:textColor="@color/blackcow"
+        android:textSize="40sp"
+        android:textStyle="bold"
         android:visibility="visible"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="94dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.476" />
 
     <Button
         android:id="@+id/button"
@@ -34,26 +39,61 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-
+        android:background="@drawable/roundedcorner"
         android:text="Show Weather"
-        tools:layout_editor_absoluteX="105dp"
-        tools:layout_editor_absoluteY="667dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.749" />
 
     <EditText
         android:id="@+id/editTextText"
-        android:layout_width="365dp"
-        android:layout_height="48dp"
+        android:layout_width="404dp"
+        android:layout_height="59dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:background="#AB120400"
-
+        android:background="@drawable/roundedcorner"
+        android:backgroundTint="#99000000"
         android:gravity="center"
-        android:hint="Enter any City"
+        android:hint="Enter Any City"
         android:inputType="text"
-        android:textColorHint="@color/white"
+        android:textColorHint="@color/ivory"
         android:textSize="30sp"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="439dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.629" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="493dp"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.353"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04"
+        app:srcCompat="@drawable/weather" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
+        app:srcCompat="@android:drawable/ic_dialog_dialer" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
