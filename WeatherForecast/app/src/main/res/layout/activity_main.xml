@@ -5,18 +5,28 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@drawable/img"
+=======
+    android:background="@drawable/backg"
+>>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView"
+<<<<<<< HEAD
         android:layout_width="413dp"
         android:layout_height="134dp"
+=======
+        android:layout_width="415dp"
+        android:layout_height="83dp"
+>>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="#00A2BCBA"
+<<<<<<< HEAD
         android:gravity="center"
         android:hapticFeedbackEnabled="true"
         android:text="Weather Forecast App"
@@ -29,6 +39,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.166" />
+=======
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:hapticFeedbackEnabled="true"
+        android:text="Weather Forecast App"
+        android:textColor="@color/blackcow"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.476" />
+>>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
 
     <Button
         android:id="@+id/button"
@@ -38,23 +63,37 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+<<<<<<< HEAD
 
+=======
+        android:background="@drawable/roundedcorner"
+>>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
         android:text="Show Weather"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.947" />
 
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="381dp"
         android:layout_height="47dp"
+=======
+        app:layout_constraintVertical_bias="0.749" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="404dp"
+        android:layout_height="59dp"
+>>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+<<<<<<< HEAD
 
         android:background="#97251212"
         android:gravity="center"
@@ -69,4 +108,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.583" />
+=======
+        android:background="@drawable/roundedcorner"
+        android:backgroundTint="#99000000"
+        android:gravity="center"
+        android:hint="Enter Any City"
+        android:inputType="text"
+        android:textColorHint="@color/ivory"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.629" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="493dp"
+        android:layout_height="340dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.353"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04"
+        app:srcCompat="@drawable/weather" />
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:paddingBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/roundedcorner">
+
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:backgroundTint="@color/white"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation" />
+>>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
 </androidx.constraintlayout.widget.ConstraintLayout>
