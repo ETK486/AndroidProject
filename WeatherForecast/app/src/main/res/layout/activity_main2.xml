@@ -5,21 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
-    android:background="@drawable/img"
-    tools:context=".MainActivity2">
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="56dp"
-        android:layout_height="57dp"
-        android:clickable="true"
-        app:backgroundTint="#FAFFFFFF"
-        app:fabSize="auto"
-        app:srcCompat="@android:drawable/ic_menu_revert"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
-=======
     android:background="@drawable/backg"
     tools:context=".MainActivity2">
 
@@ -35,5 +20,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023"
         app:srcCompat="@drawable/backbutton" />
->>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
 </androidx.constraintlayout.widget.ConstraintLayout>

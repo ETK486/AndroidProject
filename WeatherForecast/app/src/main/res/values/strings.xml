@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">WeatherForecast</string>
     <string name="weather_forecast_app">Weather Forecast App</string>
-<<<<<<< HEAD
-=======
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
->>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
 </resources>

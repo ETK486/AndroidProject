@@ -2,10 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<<<<<<< HEAD
-=======
     <color name="blackcow">#4C4646</color>
     <color name="ivory">#FFFFF0</color>
     <color name="teal">#008080</color>
->>>>>>> 49f42706eedc7c1964477cab26c4233588e75297
 </resources>
