@@ -5,26 +5,29 @@
     android:id="@+id/main3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backg"
+    android:layerType="hardware"
+    android:background="@drawable/back"
     tools:context=".MainActivity3">
 
     <EditText
         android:id="@+id/temperatureEditText"
-        android:layout_width="394dp"
-        android:layout_height="52dp"
+        android:layout_width="400dp"
+        android:layerType="hardware"
+        android:layout_height="60dp"
         android:background="@drawable/roundedcorner"
         android:backgroundTint="#5E120606"
         android:gravity="center"
         android:hint="Enter temperature in Celsius"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textStyle="bold"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642" />
+        app:layout_constraintVertical_bias="0.804" />
 
     <Button
         android:id="@+id/convertButton"
@@ -34,63 +37,82 @@
         android:layout_marginStart="147dp"
         android:layout_marginEnd="147dp"
         android:text="Convert"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        app:layout_constraintVertical_bias="0.923" />
 
     <TextView
         android:id="@+id/fahrenheitTextView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="370dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/ivory"
+        android:background="@drawable/roundedcorner"
+        android:backgroundTint="@color/seaform"
         android:gravity="center"
         android:textAppearance="@color/black"
-        android:textSize="18sp"
+        android:layerType="hardware"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.352" />
+        app:layout_constraintVertical_bias="0.39" />
 
     <TextView
         android:id="@+id/kelvinTextView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="370dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/ivory"
+        android:background="@drawable/roundedcorner"
+        android:backgroundTint="@color/seaform"
         android:gravity="center"
         android:textAppearance="@color/black"
-        android:textSize="18sp"
+        android:layerType="hardware"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:gravity="center"
+        android:text="Temperature Conversion"
+        android:textAppearance="@color/black"
+        android:textSize="27dp"
+        android:layerType="hardware"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.429" />
+        app:layout_constraintVertical_bias="0.05" />
 
-    <TextView
-        android:id="@+id/heading"
-        android:layout_width="302dp"
-        android:layout_height="58dp"
-        android:gravity="center"
-        android:text="Temperature Conversion"
-        android:textAppearance="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:background="@color/ivory"
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="53dp"
+        android:layout_height="43dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.002"
+        app:srcCompat="?attr/homeAsUpIndicator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
