@@ -6,6 +6,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -24,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -44,17 +48,19 @@ public class MainActivity2 extends AppCompatActivity {
         act=findViewById(R.id.main2);
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if (hour>6&&hour<=18){
+        if (hour > 6 && hour <= 18) {
+            Log.d("datework", String.valueOf(hour));
             act.setBackgroundResource(R.drawable.day);
             int blacktinted = Color.parseColor("#80000000");
             tview.setTextColor(Color.WHITE);
             tview.setBackgroundTintList(ColorStateList.valueOf(blacktinted));
-        }else {
+        } else {
             act.setBackgroundResource(R.drawable.night);
             tview.setTextColor(Color.BLACK);
-            int whitetinted=Color.parseColor("#80FFFFFF");
+            int whitetinted = Color.parseColor("#80FFFFFF");
             tview.setBackgroundTintList(ColorStateList.valueOf(whitetinted));
         }
+
         // Set a click listener on the back button to navigate back to MainActivity
         back.setOnClickListener(new View.OnClickListener() {
             @Override

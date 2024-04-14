@@ -3,6 +3,7 @@ package com.example.weatherforecast;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.RenderNode;
 import android.os.Build;
@@ -44,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         calculate=findViewById(R.id.calcbutton);
         act1=findViewById(R.id.main1);
         title=findViewById(R.id.textView);
+        int seaform=Color.parseColor("#66D6A6");
+        int blackcow=Color.parseColor("#343480");
+        int marine=Color.parseColor("#01386A");
+        int bwhite=Color.parseColor("#F4F5F0");
+        int mblack=Color.parseColor("#2A2626");
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main1), (v, insets) -> {
@@ -52,10 +58,15 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         if (hour>6&&hour<=18){
+            search.setBackgroundTintList(ColorStateList.valueOf(marine));
             act1.setBackgroundResource(R.drawable.day);
-            title.setTextColor(Color.WHITE);
+            search.setTextColor(Color.WHITE);
+            title.setTextColor(ColorStateList.valueOf(bwhite));
+            calculate.setBackgroundTintList(ColorStateList.valueOf(mblack));
         }else {
             act1.setBackgroundResource(R.drawable.night);
+            search.setBackgroundTintList(ColorStateList.valueOf(seaform));
+            calculate.setBackgroundTintList(ColorStateList.valueOf(blackcow));
         }
         search.setOnClickListener(new View.OnClickListener() {
             @Override
