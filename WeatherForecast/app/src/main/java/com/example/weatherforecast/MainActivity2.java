@@ -17,7 +17,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+<<<<<<< HEAD
 import android.widget.ProgressBar;
+=======
+>>>>>>> 1999418541e367f008f89e782b5b4934aef22552
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -36,7 +39,10 @@ public class MainActivity2 extends AppCompatActivity {
     TextView tview;
     View act;
     String turl;
+<<<<<<< HEAD
     ProgressBar prog;
+=======
+>>>>>>> 1999418541e367f008f89e782b5b4934aef22552
     private final String url="https://api.openweathermap.org/data/2.5/weather";
     private final String apid="caa95405da3c122ede62d8692dc4c65e";
 
@@ -48,7 +54,10 @@ public class MainActivity2 extends AppCompatActivity {
         back = findViewById(R.id.imageButton2);
         tview = findViewById(R.id.textView2);
         act=findViewById(R.id.main2);
+<<<<<<< HEAD
         prog=findViewById(R.id.progressbar);
+=======
+>>>>>>> 1999418541e367f008f89e782b5b4934aef22552
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour > 6 && hour <= 18) {
@@ -78,7 +87,10 @@ public class MainActivity2 extends AppCompatActivity {
 
     // Method to retrieve intent extras and display in the TextView
     private void getWeatherDetails() {
+<<<<<<< HEAD
         prog.setVisibility(View.VISIBLE);
+=======
+>>>>>>> 1999418541e367f008f89e782b5b4934aef22552
         Intent intent = getIntent();
         if (intent != null) {
             String country = intent.getStringExtra("Location");
@@ -117,7 +129,10 @@ public class MainActivity2 extends AppCompatActivity {
                             }
                             output = "Current weather of " + cityName + "(" + countryName + ")" + "\n Temp: " + String.valueOf(temp)+"°C"+"\n Feels Like: "+String.valueOf(feelsLike)+"°C"+"\n Humidity: "+String.valueOf(humidity)+" %"+"\n Description: "+description+"\n Wind Speed: "+String.valueOf(wind)+" m/s (meters per second)"+"\n Cloudiness: "+String.valueOf(clouds)+" %"+"\n Pressure: "+String.valueOf(pressure)+" hPa";
                             tview.setText(output);
+<<<<<<< HEAD
                             prog.setVisibility(View.INVISIBLE);
+=======
+>>>>>>> 1999418541e367f008f89e782b5b4934aef22552
                         }catch (Exception e){
                             tview.setText("Error parsing weather data: " + e.getMessage());
                             Log.e("JSON Parse Error", e.getMessage());
