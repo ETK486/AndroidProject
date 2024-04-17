@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1004764905262",
+    "project_id": "weatherforecast-e8407",
+    "storage_bucket": "weatherforecast-e8407.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004764905262:android:e953891afa134c421384bf",
+        "android_client_info": {
+          "package_name": "com.example.weatherforecast"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxIYXXIzkgx3eGyseTlzLFIdGDcbTml2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
