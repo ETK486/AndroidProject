@@ -32,10 +32,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton calculate;
     View act1;
     TextView title;
-<<<<<<< HEAD
     private long timepassed;
-=======
->>>>>>> 1999418541e367f008f89e782b5b4934aef22552
 
 
 
@@ -100,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-<<<<<<< HEAD
     public void onBackPressed() {
         if (timepassed + 2000 > System.currentTimeMillis()) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -114,7 +110,4 @@ public class MainActivity extends AppCompatActivity {
         }
         timepassed = System.currentTimeMillis();
     }
-=======
->>>>>>> 1999418541e367f008f89e782b5b4934aef22552
-
 }

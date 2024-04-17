@@ -17,10 +17,7 @@
         android:fontFamily="serif-monospace"
         android:gravity="center"
         android:layerType="hardware"
-<<<<<<< HEAD
-=======
         android:text="TextView"
->>>>>>> 1999418541e367f008f89e782b5b4934aef22552
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,8 +26,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
-
-<<<<<<< HEAD
     <ProgressBar
         android:id="@+id/progressbar"
         android:layout_width="wrap_content"
@@ -42,8 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-=======
->>>>>>> 1999418541e367f008f89e782b5b4934aef22552
     <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="35dp"
