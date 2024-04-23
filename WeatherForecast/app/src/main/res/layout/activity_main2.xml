@@ -17,7 +17,6 @@
         android:fontFamily="serif-monospace"
         android:gravity="center"
         android:layerType="hardware"
-        android:text="TextView"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -84,6 +84,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.638" />
 
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/calcbutton"
         android:layout_width="wrap_content"

@@ -18,7 +18,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources=true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -30,7 +31,7 @@ android {
 
 
 dependencies {
-
+    implementation ("com.airbnb.android:lottie:4.2.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
