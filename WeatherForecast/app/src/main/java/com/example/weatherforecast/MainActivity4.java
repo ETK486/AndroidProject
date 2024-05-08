@@ -1,44 +1,30 @@
 package com.example.weatherforecast;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-class DisplayDatabaseActivity extends AppCompatActivity {
+import java.util.List;
 
-    private TextView databaseContentTextView;
-
+public class MainActivity4 extends AppCompatActivity {
+    TextView tex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main4);
-
-        databaseContentTextView = findViewById(R.id.database_content_textview);
-
-        // Open the SQLite database
-        SQLiteDatabase db = openOrCreateDatabase("your_database_name.db", MODE_PRIVATE, null);
-
-        // Query the database and retrieve the contents
-        Cursor cursor = db.rawQuery("SELECT * FROM your_table_name", null);
-        StringBuilder databaseContent = new StringBuilder();
-        if (cursor.moveToFirst()) {
-            do {
-                // Assuming you have columns named "column1" and "column2" in your table
-                String column1Data = Cursor.getString(Cursor.getColumnIndex("column1"));
-                String column2Data = Cursor.getString(Cursor.getColumnIndex("column2"));
-                // Append the retrieved data to the StringBuilder
-                databaseContent.append("Column1: ").append(column1Data).append(", Column2: ").append(column2Data).append("\n");
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        // Display the database contents in the TextView
-        databaseContentTextView.setText(databaseContent.toString());
-
-        // Close the database
-        db.close();
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        tex=findViewById(R.id.textView3);
+        List<WeatherData> weatherDataList = getIntent().getParcelableArrayListExtra("weatherDataList");
+        tex.setText(weatherDataList.toString());
     }
 }

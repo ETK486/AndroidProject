@@ -10,17 +10,21 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -36,6 +40,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity2 extends AppCompatActivity {
@@ -88,6 +93,7 @@ public class MainActivity2 extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity2.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slidein, R.anim.slideout);
+                startActivity(intent);
             }
         });
         getWeatherDetails();
@@ -97,6 +103,9 @@ public class MainActivity2 extends AppCompatActivity {
     private void getWeatherDetails() {
         prog.setVisibility(View.VISIBLE);
         Intent intent = getIntent();
+        List<WeatherData> weatherDataList = dbHelper.getWeatherData();
+        intent = new Intent(MainActivity2.this, MainActivity4.class);
+        intent.putParcelableArrayListExtra("weatherDataList", new ArrayList<>(weatherDataList));
         if (intent != null) {
             String country = intent.getStringExtra("Location");
             if (country != null) {
@@ -251,6 +260,131 @@ class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+    public List<WeatherData> getWeatherData() {
+        List<WeatherData> weatherDataList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                COLUMN_CITY_NAME,
+                COLUMN_COUNTRY_NAME,
+                COLUMN_TEMPERATURE,
+                COLUMN_FEELS_LIKE,
+                COLUMN_HUMIDITY,
+                COLUMN_DESCRIPTION,
+                COLUMN_WIND_SPEED,
+                COLUMN_CLOUDS,
+                COLUMN_PRESSURE
+        };
+
+        Cursor cursor = db.query(
+                TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            String cityName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CITY_NAME));
+            String countryName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY_NAME));
+            int temperature = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TEMPERATURE));
+            int feelsLike = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FEELS_LIKE));
+            int humidity = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HUMIDITY));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION));
+            String windSpeed = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WIND_SPEED));
+            String clouds = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLOUDS));
+            float pressure = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_PRESSURE));
+
+            WeatherData weatherData = new WeatherData(cityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure);
+            weatherDataList.add(weatherData);
+        }
+        cursor.close();
+        db.close();
+        return weatherDataList;
+    }
+}
+
+class WeatherData implements Parcelable {
+    private String cityName;
+    private String countryName;
+    private int temperature;
+    private int feelsLike;
+    private int humidity;
+    private String description;
+    private String windSpeed;
+    private String clouds;
+    private float pressure;
+
+    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
+        this.cityName = cityName;
+        this.countryName = countryName;
+        this.temperature = temperature;
+        this.feelsLike = feelsLike;
+        this.humidity = humidity;
+        this.description = description;
+        this.windSpeed = windSpeed;
+        this.clouds = clouds;
+        this.pressure = pressure;
+    }
+
+    protected WeatherData(Parcel in) {
+        cityName = in.readString();
+        countryName = in.readString();
+        temperature = in.readInt();
+        feelsLike = in.readInt();
+        humidity = in.readInt();
+        description = in.readString();
+        windSpeed = in.readString();
+        clouds = in.readString();
+        pressure = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<WeatherData> CREATOR = new Creator<WeatherData>() {
+        @Override
+        public WeatherData createFromParcel(Parcel in) {
+            return new WeatherData(in);
+        }
+
+        @Override
+        public WeatherData[] newArray(int size) {
+            return new WeatherData[size];
+        }
+    };
+
+    // Getter methods for all fields
+    public String getCityName() {
+        return cityName;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    // Other getters for other fields
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(cityName);
+        dest.writeString(countryName);
+        dest.writeInt(temperature);
+        dest.writeInt(feelsLike);
+        dest.writeInt(humidity);
+        dest.writeString(description);
+        dest.writeString(windSpeed);
+        dest.writeString(clouds);
+        dest.writeFloat(pressure);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }
 
