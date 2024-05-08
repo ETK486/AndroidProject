@@ -1,5 +1,7 @@
 package com.example.weatherforecast;
 
+import static android.content.ContentValues.TAG;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -9,8 +11,14 @@ import com.android.volley.toolbox.Volley;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +42,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     ImageButton back;
     TextView tview;
+    private DBHelper dbHelper;
     View act;
     String turl;
     private final String url="https://api.openweathermap.org/data/2.5/weather";
@@ -49,6 +58,14 @@ public class MainActivity2 extends AppCompatActivity {
         tview = findViewById(R.id.textView2);
         act=findViewById(R.id.main2);
         prog=findViewById(R.id.progressbar);
+        dbHelper = new DBHelper(this);
+        boolean isDatabaseExists = checkDatabaseExists();
+
+        if (isDatabaseExists) {
+            Log.d(TAG, "Database exists");
+        } else {
+            Log.d(TAG, "Database does not exist");
+        }
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour > 6 && hour <= 18) {
@@ -117,6 +134,7 @@ public class MainActivity2 extends AppCompatActivity {
                             }
                             output = "Current weather of " + cityName + "(" + countryName + ")" + "\n Temp: " + String.valueOf(temp)+"°C"+"\n Feels Like: "+String.valueOf(feelsLike)+"°C"+"\n Humidity: "+String.valueOf(humidity)+" %"+"\n Description: "+description+"\n Wind Speed: "+String.valueOf(wind)+" m/s (meters per second)"+"\n Cloudiness: "+String.valueOf(clouds)+" %"+"\n Pressure: "+String.valueOf(pressure)+" hPa";
                             tview.setText(output);
+                            insertWeatherData(cityName, countryName, temp, feelsLike, humidity, description, wind, clouds, pressure);
                             prog.setVisibility(View.INVISIBLE);
                         }catch (Exception e){
                             tview.setText("Error parsing weather data: " + e.getMessage());
@@ -139,4 +157,100 @@ public class MainActivity2 extends AppCompatActivity {
             tview.setText("Intent is null");
         }
     }
+    private void insertWeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
+        // Open the database for writing
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Create a ContentValues object to store the data
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.COLUMN_CITY_NAME, cityName);
+        values.put(DBHelper.COLUMN_COUNTRY_NAME, countryName);
+        values.put(DBHelper.COLUMN_TEMPERATURE, temperature);
+        values.put(DBHelper.COLUMN_FEELS_LIKE, feelsLike);
+        values.put(DBHelper.COLUMN_HUMIDITY, humidity);
+        values.put(DBHelper.COLUMN_DESCRIPTION, description);
+        values.put(DBHelper.COLUMN_WIND_SPEED, windSpeed);
+        values.put(DBHelper.COLUMN_CLOUDS, clouds);
+        values.put(DBHelper.COLUMN_PRESSURE, pressure);
+
+        // Insert the data into the database
+        long newRowId = db.insert(DBHelper.TABLE_NAME, null, values);
+
+        // Check if the data was inserted successfully
+        if (newRowId != -1) {
+            Log.d(TAG, "Weather data inserted with ID: " + newRowId);
+        } else {
+            Log.e(TAG, "Error inserting weather data");
+        }
+
+        // Close the database connection
+        db.close();
+    }
+    private boolean checkDatabaseExists() {
+        SQLiteDatabase db = null;
+        try {
+            // Attempt to open the database
+            db = SQLiteDatabase.openDatabase(
+                    getDatabasePath(DBHelper.DATABASE_NAME).getPath(),
+                    null,
+                    SQLiteDatabase.OPEN_READONLY);
+        } catch (SQLiteException e) {
+            // Database does not exist or cannot be opened
+            Log.e(TAG, "Database does not exist or cannot be opened: " + e.getMessage());
+        }
+
+        // Check if the database was opened successfully
+        if (db != null) {
+            // Close the database
+            db.close();
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+class DBHelper extends SQLiteOpenHelper {
+
+    static final String DATABASE_NAME = "weather_database";
+    private static final int DATABASE_VERSION = 1;
+
+    static final String TABLE_NAME = "weather_data";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_CITY_NAME = "city_name";
+    static final String COLUMN_COUNTRY_NAME = "country_name";
+    static final String COLUMN_TEMPERATURE = "temperature";
+    static final String COLUMN_FEELS_LIKE = "feels_like";
+    static final String COLUMN_HUMIDITY = "humidity";
+    static final String COLUMN_DESCRIPTION = "description";
+    static final String COLUMN_WIND_SPEED = "wind_speed";
+    static final String COLUMN_CLOUDS = "clouds";
+    static final String COLUMN_PRESSURE = "pressure";
+
+    private static final String SQL_CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_CITY_NAME + " TEXT," +
+                    COLUMN_COUNTRY_NAME + " TEXT," +
+                    COLUMN_TEMPERATURE + " INTEGER," +
+                    COLUMN_FEELS_LIKE + " INTEGER," +
+                    COLUMN_HUMIDITY + " INTEGER," +
+                    COLUMN_DESCRIPTION + " TEXT," +
+                    COLUMN_WIND_SPEED + " TEXT," +
+                    COLUMN_CLOUDS + " TEXT," +
+                    COLUMN_PRESSURE + " REAL)";
+
+    DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+}
+
