@@ -33,12 +33,12 @@ public class LaunchActivity extends AppCompatActivity {
         lottie=findViewById(R.id.lottieAnimationView2);
         lottie.animate();
         lottie.playAnimation();
-        overridePendingTransition(R.anim.zoomin,0);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent i= new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.slidein,R.anim.slideout);
             }
         },1500);
         Calendar calendar = Calendar.getInstance();

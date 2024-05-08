@@ -1,7 +1,5 @@
 package com.example.weatherforecast;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity3 extends AppCompatActivity {
     protected EditText temperatureEditText;
     protected TextView fahrenheitTextView;
+    protected TextView kelvinTextView;
     ImageButton img;
     View rootLayout;
     private boolean isAnimationStarted = false;
@@ -35,6 +34,7 @@ public class MainActivity3 extends AppCompatActivity {
             rootLayout = findViewById(R.id.main3);
             temperatureEditText = findViewById(R.id.temperatureEditText);
             fahrenheitTextView = findViewById(R.id.fahrenheitTextView);
+            kelvinTextView = findViewById(R.id.kelvinTextView);
             img=findViewById(R.id.imageButton);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main3), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -50,16 +50,13 @@ public class MainActivity3 extends AppCompatActivity {
                     if (temp.equals("")) {
                         Toast.makeText(MainActivity3.this, "Temperature cannot be Empty", Toast.LENGTH_SHORT).show();
                     } else {
-                        AnimatorSet animatorSet = new AnimatorSet();
-                        ObjectAnimator fadeInAnimator = ObjectAnimator.ofFloat(fahrenheitTextView, "alpha", 0f, 1f);
-                        fadeInAnimator.setDuration(500);
-                        animatorSet.play(fadeInAnimator);
-                        animatorSet.start();
                         double temperature = Double.parseDouble(temp);
                         double fahrenheit = (temperature * 9 / 5) + 32;
                         double kelvin = temperature + 273.15;
-                        fahrenheitTextView.setText("Fahrenheit: " + fahrenheit + "°F"+"\n\n"+"Kelvin: " + kelvin + "K");
+                        fahrenheitTextView.setText("Fahrenheit: " + fahrenheit + "°F");
                         fahrenheitTextView.setVisibility(View.VISIBLE);
+                        kelvinTextView.setText("Kelvin: " + kelvin + "K");
+                        kelvinTextView.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -87,7 +84,7 @@ public class MainActivity3 extends AppCompatActivity {
                     rootLayout.clearAnimation();
                     Animator anim = ViewAnimationUtils.createCircularReveal(rootLayout, cx, cy, 0,
                             Math.max(rootLayout.getWidth(), rootLayout.getHeight()));
-                    anim.setDuration(500);
+                    anim.setDuration(500); // Set animation duration
                     anim.start();
                 }
             });
@@ -100,9 +97,13 @@ public class MainActivity3 extends AppCompatActivity {
         try {
             int cx = getIntent().getIntExtra("cx", 0);
             int cy = getIntent().getIntExtra("cy", 0);
+
+            // Set up the Circular Reveal animation on the root layout
             Animator anim = ViewAnimationUtils.createCircularReveal(rootLayout, cx, cy,
                     Math.max(rootLayout.getWidth(), rootLayout.getHeight()), 0);
-            anim.setDuration(500);
+            anim.setDuration(500); // Set animation duration
+
+            // Set up an animation listener to finish the activity when the animation ends
             anim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -110,6 +111,7 @@ public class MainActivity3 extends AppCompatActivity {
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
+                    // Finish the activity when the animation ends
                     MainActivity3.super.onBackPressed();
                 }
 
@@ -122,6 +124,7 @@ public class MainActivity3 extends AppCompatActivity {
                 }
             });
 
+            // Start the animation
             anim.start();
         } catch (Exception e) {
             Log.e("Res", String.valueOf(e));
