@@ -2,7 +2,11 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+<<<<<<< HEAD
       <entry key="LaunchActivity">
+=======
+      <entry key="app">
+>>>>>>> 80c97b5317f27b777625813fdf8a641ff7e1f623
         <State />
       </entry>
     </value>
