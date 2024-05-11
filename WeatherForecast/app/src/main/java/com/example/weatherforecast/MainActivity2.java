@@ -104,8 +104,8 @@ public class MainActivity2 extends AppCompatActivity {
         prog.setVisibility(View.VISIBLE);
         Intent intent = getIntent();
         List<WeatherData> weatherDataList = dbHelper.getWeatherData();
-        intent = new Intent(MainActivity2.this, MainActivity4.class);
-        intent.putParcelableArrayListExtra("weatherDataList", new ArrayList<>(weatherDataList));
+        Intent data = new Intent(MainActivity2.this, MainActivity4.class);
+        data.putParcelableArrayListExtra("weatherDataList", new ArrayList<>(weatherDataList));
         if (intent != null) {
             String country = intent.getStringExtra("Location");
             if (country != null) {

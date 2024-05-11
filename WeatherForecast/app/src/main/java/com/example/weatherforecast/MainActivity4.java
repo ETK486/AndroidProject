@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.List;
 
 public class MainActivity4 extends AppCompatActivity {
+
     TextView tex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
