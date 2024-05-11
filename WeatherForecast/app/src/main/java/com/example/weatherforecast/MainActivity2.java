@@ -42,6 +42,212 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+class DBHelper extends SQLiteOpenHelper {
+
+    static final String DATABASE_NAME = "weather_database";
+    private static final int DATABASE_VERSION = 1;
+
+    static final String TABLE_NAME = "weather_data";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_CITY_NAME = "city_name";
+    static final String COLUMN_COUNTRY_NAME = "country_name";
+    static final String COLUMN_TEMPERATURE = "temperature";
+    static final String COLUMN_FEELS_LIKE = "feels_like";
+    static final String COLUMN_HUMIDITY = "humidity";
+    static final String COLUMN_DESCRIPTION = "description";
+    static final String COLUMN_WIND_SPEED = "wind_speed";
+    static final String COLUMN_CLOUDS = "clouds";
+    static final String COLUMN_PRESSURE = "pressure";
+
+    private static final String SQL_CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_CITY_NAME + " TEXT," +
+                    COLUMN_COUNTRY_NAME + " TEXT," +
+                    COLUMN_TEMPERATURE + " INTEGER," +
+                    COLUMN_FEELS_LIKE + " INTEGER," +
+                    COLUMN_HUMIDITY + " INTEGER," +
+                    COLUMN_DESCRIPTION + " TEXT," +
+                    COLUMN_WIND_SPEED + " TEXT," +
+                    COLUMN_CLOUDS + " TEXT," +
+                    COLUMN_PRESSURE + " REAL)";
+
+    DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Add upgrade logic here if needed
+    }
+
+    public List<WeatherData> getWeatherData() {
+        List<WeatherData> weatherDataList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                COLUMN_CITY_NAME,
+                COLUMN_COUNTRY_NAME,
+                COLUMN_TEMPERATURE,
+                COLUMN_FEELS_LIKE,
+                COLUMN_HUMIDITY,
+                COLUMN_DESCRIPTION,
+                COLUMN_WIND_SPEED,
+                COLUMN_CLOUDS,
+                COLUMN_PRESSURE
+        };
+
+        Cursor cursor = db.query(
+                TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try {
+            while (cursor.moveToNext()) {
+                String cityName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CITY_NAME));
+                String countryName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY_NAME));
+                int temperature = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TEMPERATURE));
+                int feelsLike = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FEELS_LIKE));
+                int humidity = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HUMIDITY));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION));
+                String windSpeed = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WIND_SPEED));
+                String clouds = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLOUDS));
+                float pressure = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_PRESSURE));
+
+                WeatherData weatherData = new WeatherData(cityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure);
+                weatherDataList.add(weatherData);
+            }
+        } catch (Exception e) {
+            Log.e("DBHelper", "Error while retrieving weather data: " + e.getMessage());
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        Log.d("DBHelper", "Number of rows retrieved from database: " + weatherDataList.size());
+        return weatherDataList;
+    }
+}
+
+class WeatherData implements Parcelable {
+    private String cityName;
+    private String countryName;
+    private int temperature;
+    private int feelsLike;
+    private int humidity;
+    private String description;
+    private String windSpeed;
+    private String clouds;
+    private float pressure;
+
+    public String toString() {
+        return "City: " + cityName + ", Country: " + countryName + "\n"
+                + "Temperature: " + temperature + "°C, Feels like: " + feelsLike + "°C\n"
+                + "Humidity: " + humidity + "%, Description: " + description + "\n"
+                + "Wind Speed: " + windSpeed + " m/s, Cloudiness: " + clouds + "%\n"
+                + "Pressure: " + pressure + " hPa";
+    }
+    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
+        this.cityName = cityName;
+        this.countryName = countryName;
+        this.temperature = temperature;
+        this.feelsLike = feelsLike;
+        this.humidity = humidity;
+        this.description = description;
+        this.windSpeed = windSpeed;
+        this.clouds = clouds;
+        this.pressure = pressure;
+    }
+
+    protected WeatherData(Parcel in) {
+        cityName = in.readString();
+        countryName = in.readString();
+        temperature = in.readInt();
+        feelsLike = in.readInt();
+        humidity = in.readInt();
+        description = in.readString();
+        windSpeed = in.readString();
+        clouds = in.readString();
+        pressure = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<WeatherData> CREATOR = new Creator<WeatherData>() {
+        @Override
+        public WeatherData createFromParcel(Parcel in) {
+            return new WeatherData(in);
+        }
+
+        @Override
+        public WeatherData[] newArray(int size) {
+            return new WeatherData[size];
+        }
+    };
+
+    // Getter methods for all fields
+    public String getCityName() {
+        return cityName;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+    public int getFeelsLike() {
+        return feelsLike;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getWindSpeed() {
+        return windSpeed;
+    }
+
+    public String getClouds() {
+        return clouds;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(cityName);
+        dest.writeString(countryName);
+        dest.writeInt(temperature);
+        dest.writeInt(feelsLike);
+        dest.writeInt(humidity);
+        dest.writeString(description);
+        dest.writeString(windSpeed);
+        dest.writeString(clouds);
+        dest.writeFloat(pressure);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+}
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -64,13 +270,6 @@ public class MainActivity2 extends AppCompatActivity {
         act=findViewById(R.id.main2);
         prog=findViewById(R.id.progressbar);
         dbHelper = new DBHelper(this);
-        boolean isDatabaseExists = checkDatabaseExists();
-
-        if (isDatabaseExists) {
-            Log.d(TAG, "Database exists");
-        } else {
-            Log.d(TAG, "Database does not exist");
-        }
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour > 6 && hour <= 18) {
@@ -165,6 +364,8 @@ public class MainActivity2 extends AppCompatActivity {
         } else {
             tview.setText("Intent is null");
         }
+
+
     }
     private void insertWeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
         // Open the database for writing
@@ -195,196 +396,7 @@ public class MainActivity2 extends AppCompatActivity {
         // Close the database connection
         db.close();
     }
-    private boolean checkDatabaseExists() {
-        SQLiteDatabase db = null;
-        try {
-            // Attempt to open the database
-            db = SQLiteDatabase.openDatabase(
-                    getDatabasePath(DBHelper.DATABASE_NAME).getPath(),
-                    null,
-                    SQLiteDatabase.OPEN_READONLY);
-        } catch (SQLiteException e) {
-            // Database does not exist or cannot be opened
-            Log.e(TAG, "Database does not exist or cannot be opened: " + e.getMessage());
-        }
 
-        // Check if the database was opened successfully
-        if (db != null) {
-            // Close the database
-            db.close();
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-class DBHelper extends SQLiteOpenHelper {
-
-    static final String DATABASE_NAME = "weather_database";
-    private static final int DATABASE_VERSION = 1;
-
-    static final String TABLE_NAME = "weather_data";
-    static final String COLUMN_ID = "_id";
-    static final String COLUMN_CITY_NAME = "city_name";
-    static final String COLUMN_COUNTRY_NAME = "country_name";
-    static final String COLUMN_TEMPERATURE = "temperature";
-    static final String COLUMN_FEELS_LIKE = "feels_like";
-    static final String COLUMN_HUMIDITY = "humidity";
-    static final String COLUMN_DESCRIPTION = "description";
-    static final String COLUMN_WIND_SPEED = "wind_speed";
-    static final String COLUMN_CLOUDS = "clouds";
-    static final String COLUMN_PRESSURE = "pressure";
-
-    private static final String SQL_CREATE_TABLE =
-            "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COLUMN_CITY_NAME + " TEXT," +
-                    COLUMN_COUNTRY_NAME + " TEXT," +
-                    COLUMN_TEMPERATURE + " INTEGER," +
-                    COLUMN_FEELS_LIKE + " INTEGER," +
-                    COLUMN_HUMIDITY + " INTEGER," +
-                    COLUMN_DESCRIPTION + " TEXT," +
-                    COLUMN_WIND_SPEED + " TEXT," +
-                    COLUMN_CLOUDS + " TEXT," +
-                    COLUMN_PRESSURE + " REAL)";
-
-    DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-    public List<WeatherData> getWeatherData() {
-        List<WeatherData> weatherDataList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String[] projection = {
-                COLUMN_CITY_NAME,
-                COLUMN_COUNTRY_NAME,
-                COLUMN_TEMPERATURE,
-                COLUMN_FEELS_LIKE,
-                COLUMN_HUMIDITY,
-                COLUMN_DESCRIPTION,
-                COLUMN_WIND_SPEED,
-                COLUMN_CLOUDS,
-                COLUMN_PRESSURE
-        };
-
-        Cursor cursor = db.query(
-                TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        while (cursor.moveToNext()) {
-            String cityName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CITY_NAME));
-            String countryName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY_NAME));
-            int temperature = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TEMPERATURE));
-            int feelsLike = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FEELS_LIKE));
-            int humidity = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HUMIDITY));
-            String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION));
-            String windSpeed = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WIND_SPEED));
-            String clouds = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLOUDS));
-            float pressure = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_PRESSURE));
-
-            WeatherData weatherData = new WeatherData(cityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure);
-            weatherDataList.add(weatherData);
-        }
-        cursor.close();
-        db.close();
-        return weatherDataList;
-    }
 }
 
-class WeatherData implements Parcelable {
-    private String cityName;
-    private String countryName;
-    private int temperature;
-    private int feelsLike;
-    private int humidity;
-    private String description;
-    private String windSpeed;
-    private String clouds;
-    private float pressure;
-
-    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
-        this.cityName = cityName;
-        this.countryName = countryName;
-        this.temperature = temperature;
-        this.feelsLike = feelsLike;
-        this.humidity = humidity;
-        this.description = description;
-        this.windSpeed = windSpeed;
-        this.clouds = clouds;
-        this.pressure = pressure;
-    }
-
-    protected WeatherData(Parcel in) {
-        cityName = in.readString();
-        countryName = in.readString();
-        temperature = in.readInt();
-        feelsLike = in.readInt();
-        humidity = in.readInt();
-        description = in.readString();
-        windSpeed = in.readString();
-        clouds = in.readString();
-        pressure = in.readFloat();
-    }
-
-    public static final Parcelable.Creator<WeatherData> CREATOR = new Creator<WeatherData>() {
-        @Override
-        public WeatherData createFromParcel(Parcel in) {
-            return new WeatherData(in);
-        }
-
-        @Override
-        public WeatherData[] newArray(int size) {
-            return new WeatherData[size];
-        }
-    };
-
-    // Getter methods for all fields
-    public String getCityName() {
-        return cityName;
-    }
-
-    public String getCountryName() {
-        return countryName;
-    }
-
-    public int getTemperature() {
-        return temperature;
-    }
-
-    // Other getters for other fields
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(cityName);
-        dest.writeString(countryName);
-        dest.writeInt(temperature);
-        dest.writeInt(feelsLike);
-        dest.writeInt(humidity);
-        dest.writeString(description);
-        dest.writeString(windSpeed);
-        dest.writeString(clouds);
-        dest.writeFloat(pressure);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-}
 

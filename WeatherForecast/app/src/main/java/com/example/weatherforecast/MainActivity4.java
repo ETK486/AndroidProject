@@ -2,6 +2,7 @@ package com.example.weatherforecast;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.util.List;
 public class MainActivity4 extends AppCompatActivity {
 
     TextView tex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +26,22 @@ public class MainActivity4 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        tex=findViewById(R.id.textView3);
-        List<WeatherData> weatherDataList = getIntent().getParcelableArrayListExtra("weatherDataList");
-        tex.setText(weatherDataList.toString());
+        tex = findViewById(R.id.tex3);
+
+        // Retrieve weather data from the database
+        DBHelper dbHelper = new DBHelper(this);
+        List<WeatherData> weatherDataList = dbHelper.getWeatherData();
+
+        if (!weatherDataList.isEmpty()) {
+            // If weather data is available, set the text of the TextView
+            StringBuilder stringBuilder = new StringBuilder();
+            for (WeatherData weatherData : weatherDataList) {
+                stringBuilder.append(weatherData.toString()).append("\n\n");
+            }
+            tex.setText(stringBuilder.toString());
+        } else {
+            // If weatherDataList is empty, show a message or handle the situation accordingly
+            Toast.makeText(this, "No weather data available", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -69,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
             search.setBackgroundTintList(ColorStateList.valueOf(seaform));
             calculate.setBackgroundTintList(ColorStateList.valueOf(blackcow));
         }
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainActivity4.class);
+                startActivity(intent);
+            }
+        });
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
