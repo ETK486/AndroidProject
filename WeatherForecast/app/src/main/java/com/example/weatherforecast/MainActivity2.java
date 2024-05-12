@@ -89,7 +89,7 @@ class DBHelper extends SQLiteOpenHelper {
         // Add upgrade logic here if needed
     }
 
-    public List<WeatherData> getWeatherData() {
+    public List<WeatherData> getWeatherData(String cityName, String date) {
         List<WeatherData> weatherDataList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -105,12 +105,17 @@ class DBHelper extends SQLiteOpenHelper {
                 COLUMN_PRESSURE,
                 COLUMN_DATE
         };
+        Log.d("DBHelper", "City Name: " + cityName + ", Date: " + date);
+        String selection = COLUMN_CITY_NAME + " = ? AND " + COLUMN_DATE + " = ?";
+        String[] selectionArgs = { cityName, date };
+        String sqlQuery = "SELECT * FROM " + TABLE_NAME;
+        Log.d("DBHelper", "Executing SQL query: " + sqlQuery);
 
         Cursor cursor = db.query(
                 TABLE_NAME,
                 projection,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 null
@@ -118,7 +123,13 @@ class DBHelper extends SQLiteOpenHelper {
 
         try {
             while (cursor.moveToNext()) {
-                String cityName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CITY_NAME));
+                String rowData = "";
+                for (String column : projection) {
+                    int columnIndex = cursor.getColumnIndexOrThrow(column);
+                    rowData += column + ": " + cursor.getString(columnIndex) + ", ";
+                }
+                Log.d("DBHelper", "Retrieved row: " + rowData);
+                String retrievedCityName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CITY_NAME));
                 String countryName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COUNTRY_NAME));
                 int temperature = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TEMPERATURE));
                 int feelsLike = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FEELS_LIKE));
@@ -127,9 +138,8 @@ class DBHelper extends SQLiteOpenHelper {
                 String windSpeed = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WIND_SPEED));
                 String clouds = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLOUDS));
                 float pressure = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_PRESSURE));
-                String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)); // Retrieve date
 
-                WeatherData weatherData = new WeatherData(cityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure, date);
+                WeatherData weatherData = new WeatherData(retrievedCityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure);
                 weatherDataList.add(weatherData);
             }
         } catch (Exception e) {
@@ -142,6 +152,8 @@ class DBHelper extends SQLiteOpenHelper {
         Log.d("DBHelper", "Number of rows retrieved from database: " + weatherDataList.size());
         return weatherDataList;
     }
+
+
 }
 
 class WeatherData implements Parcelable {
@@ -162,10 +174,9 @@ class WeatherData implements Parcelable {
                 + "Temperature: " + temperature + "°C, Feels like: " + feelsLike + "°C\n"
                 + "Humidity: " + humidity + "%, Description: " + description + "\n"
                 + "Wind Speed: " + windSpeed + " m/s, Cloudiness: " + clouds + "%\n"
-                + "Pressure: " + pressure + " hPa\n"
-                + "Date: " + date;
+                + "Pressure: " + pressure + " hPa\n";
     }
-    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure,String date) {
+    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
         this.cityName = cityName;
         this.countryName = countryName;
         this.temperature = temperature;
@@ -175,7 +186,6 @@ class WeatherData implements Parcelable {
         this.windSpeed = windSpeed;
         this.clouds = clouds;
         this.pressure = pressure;
-        this.date = date;
     }
 
     protected WeatherData(Parcel in) {
@@ -188,7 +198,6 @@ class WeatherData implements Parcelable {
         windSpeed = in.readString();
         clouds = in.readString();
         pressure = in.readFloat();
-        date = in.readString();
     }
 
     public static final Parcelable.Creator<WeatherData> CREATOR = new Creator<WeatherData>() {
@@ -318,12 +327,13 @@ public class MainActivity2 extends AppCompatActivity {
     private void getWeatherDetails() {
         prog.setVisibility(View.VISIBLE);
         Intent intent = getIntent();
-        List<WeatherData> weatherDataList = dbHelper.getWeatherData();
-        Intent data = new Intent(MainActivity2.this, MainActivity4.class);
-        data.putParcelableArrayListExtra("weatherDataList", new ArrayList<>(weatherDataList));
         if (intent != null) {
             String country = intent.getStringExtra("Location");
             if (country != null) {
+                String currentDate = getCurrentDate(); // Retrieve current date
+                List<WeatherData> weatherDataList = dbHelper.getWeatherData(country, currentDate);
+                Intent data = new Intent(MainActivity2.this, MainActivity4.class);
+                data.putParcelableArrayListExtra("weatherDataList", new ArrayList<>(weatherDataList));
                 turl =url+"?q="+country+"&appid="+apid;
                 StringRequest str = new StringRequest(Request.Method.GET, turl, new Response.Listener<String>() {
                     @Override
@@ -392,6 +402,9 @@ public class MainActivity2 extends AppCompatActivity {
         // Open the database for writing
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        // Extract date without time
+        String dateWithoutTime = date.split(" ")[0]; // Extract date part
+
         // Create a ContentValues object to store the data
         ContentValues values = new ContentValues();
         values.put(DBHelper.COLUMN_CITY_NAME, cityName);
@@ -403,7 +416,7 @@ public class MainActivity2 extends AppCompatActivity {
         values.put(DBHelper.COLUMN_WIND_SPEED, windSpeed);
         values.put(DBHelper.COLUMN_CLOUDS, clouds);
         values.put(DBHelper.COLUMN_PRESSURE, pressure);
-        values.put(DBHelper.COLUMN_DATE, date); // Insert date into ContentValues
+        values.put(DBHelper.COLUMN_DATE, dateWithoutTime); // Insert date without time into ContentValues
 
         try {
             // Insert the data into the database
@@ -422,7 +435,6 @@ public class MainActivity2 extends AppCompatActivity {
             db.close();
         }
     }
-
 
 }
 
