@@ -59,6 +59,8 @@ class DBHelper extends SQLiteOpenHelper {
     static final String COLUMN_CLOUDS = "clouds";
     static final String COLUMN_PRESSURE = "pressure";
 
+    static final String COLUMN_DATE = "date";
+
     private static final String SQL_CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -70,7 +72,8 @@ class DBHelper extends SQLiteOpenHelper {
                     COLUMN_DESCRIPTION + " TEXT," +
                     COLUMN_WIND_SPEED + " TEXT," +
                     COLUMN_CLOUDS + " TEXT," +
-                    COLUMN_PRESSURE + " REAL)";
+                    COLUMN_PRESSURE + " REAL," +
+                    COLUMN_DATE + " TEXT)";
 
     DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -99,7 +102,8 @@ class DBHelper extends SQLiteOpenHelper {
                 COLUMN_DESCRIPTION,
                 COLUMN_WIND_SPEED,
                 COLUMN_CLOUDS,
-                COLUMN_PRESSURE
+                COLUMN_PRESSURE,
+                COLUMN_DATE
         };
 
         Cursor cursor = db.query(
@@ -123,8 +127,9 @@ class DBHelper extends SQLiteOpenHelper {
                 String windSpeed = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WIND_SPEED));
                 String clouds = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLOUDS));
                 float pressure = cursor.getFloat(cursor.getColumnIndexOrThrow(COLUMN_PRESSURE));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)); // Retrieve date
 
-                WeatherData weatherData = new WeatherData(cityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure);
+                WeatherData weatherData = new WeatherData(cityName, countryName, temperature, feelsLike, humidity, description, windSpeed, clouds, pressure, date);
                 weatherDataList.add(weatherData);
             }
         } catch (Exception e) {
@@ -149,15 +154,18 @@ class WeatherData implements Parcelable {
     private String windSpeed;
     private String clouds;
     private float pressure;
+    private String date;
+
 
     public String toString() {
         return "City: " + cityName + ", Country: " + countryName + "\n"
                 + "Temperature: " + temperature + "°C, Feels like: " + feelsLike + "°C\n"
                 + "Humidity: " + humidity + "%, Description: " + description + "\n"
                 + "Wind Speed: " + windSpeed + " m/s, Cloudiness: " + clouds + "%\n"
-                + "Pressure: " + pressure + " hPa";
+                + "Pressure: " + pressure + " hPa\n"
+                + "Date: " + date;
     }
-    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
+    public WeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure,String date) {
         this.cityName = cityName;
         this.countryName = countryName;
         this.temperature = temperature;
@@ -167,6 +175,7 @@ class WeatherData implements Parcelable {
         this.windSpeed = windSpeed;
         this.clouds = clouds;
         this.pressure = pressure;
+        this.date = date;
     }
 
     protected WeatherData(Parcel in) {
@@ -179,6 +188,7 @@ class WeatherData implements Parcelable {
         windSpeed = in.readString();
         clouds = in.readString();
         pressure = in.readFloat();
+        date = in.readString();
     }
 
     public static final Parcelable.Creator<WeatherData> CREATOR = new Creator<WeatherData>() {
@@ -297,6 +307,12 @@ public class MainActivity2 extends AppCompatActivity {
         });
         getWeatherDetails();
     }
+    private String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
 
     // Method to retrieve intent extras and display in the TextView
     private void getWeatherDetails() {
@@ -313,6 +329,7 @@ public class MainActivity2 extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
                         Log.d("Response",s);
+                        String currentDate = getCurrentDate(); // Retrieve current date
                         // Update UI with response data
                         String output;
                         try {
@@ -342,9 +359,9 @@ public class MainActivity2 extends AppCompatActivity {
                             }
                             output = "Current weather of " + cityName + "(" + countryName + ")" + "\n Temp: " + String.valueOf(temp)+"°C"+"\n Feels Like: "+String.valueOf(feelsLike)+"°C"+"\n Humidity: "+String.valueOf(humidity)+" %"+"\n Description: "+description+"\n Wind Speed: "+String.valueOf(wind)+" m/s (meters per second)"+"\n Cloudiness: "+String.valueOf(clouds)+" %"+"\n Pressure: "+String.valueOf(pressure)+" hPa";
                             tview.setText(output);
-                            insertWeatherData(cityName, countryName, temp, feelsLike, humidity, description, wind, clouds, pressure);
+                            insertWeatherData(cityName, countryName, temp, feelsLike, humidity, description, wind, clouds, pressure, currentDate); // Pass current date
                             prog.setVisibility(View.INVISIBLE);
-                        }catch (Exception e){
+                        } catch (Exception e){
                             tview.setText("Error parsing weather data: " + e.getMessage());
                             Log.e("JSON Parse Error", e.getMessage());
                         }
@@ -354,6 +371,11 @@ public class MainActivity2 extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         tview.setText("Error: " + volleyError.getMessage());
                         Log.e("Error", volleyError.getMessage());
+                        // Insert a placeholder entry with default values and current date
+                        String currentDate = getCurrentDate();
+                        insertWeatherData("Unknown", "Unknown", 0, 0, 0, "N/A", "N/A", "N/A", 0, currentDate);
+                        // Hide the progress bar
+                        prog.setVisibility(View.INVISIBLE);
                     }
                 });
                 RequestQueue requeue= Volley.newRequestQueue(getApplicationContext());
@@ -364,10 +386,9 @@ public class MainActivity2 extends AppCompatActivity {
         } else {
             tview.setText("Intent is null");
         }
-
-
     }
-    private void insertWeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure) {
+
+    private void insertWeatherData(String cityName, String countryName, int temperature, int feelsLike, int humidity, String description, String windSpeed, String clouds, float pressure, String date) {
         // Open the database for writing
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -382,20 +403,26 @@ public class MainActivity2 extends AppCompatActivity {
         values.put(DBHelper.COLUMN_WIND_SPEED, windSpeed);
         values.put(DBHelper.COLUMN_CLOUDS, clouds);
         values.put(DBHelper.COLUMN_PRESSURE, pressure);
+        values.put(DBHelper.COLUMN_DATE, date); // Insert date into ContentValues
 
-        // Insert the data into the database
-        long newRowId = db.insert(DBHelper.TABLE_NAME, null, values);
+        try {
+            // Insert the data into the database
+            long newRowId = db.insert(DBHelper.TABLE_NAME, null, values);
 
-        // Check if the data was inserted successfully
-        if (newRowId != -1) {
-            Log.d(TAG, "Weather data inserted with ID: " + newRowId);
-        } else {
-            Log.e(TAG, "Error inserting weather data");
+            // Check if the data was inserted successfully
+            if (newRowId != -1) {
+                Log.d(TAG, "Weather data inserted with ID: " + newRowId);
+            } else {
+                Log.e(TAG, "Error inserting weather data: newRowId is -1");
+            }
+        } catch (SQLiteException e) {
+            Log.e(TAG, "SQLiteException while inserting weather data: " + e.getMessage());
+        } finally {
+            // Close the database connection
+            db.close();
         }
-
-        // Close the database connection
-        db.close();
     }
+
 
 }
 
