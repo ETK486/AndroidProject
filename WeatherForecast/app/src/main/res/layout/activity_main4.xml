@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@drawable/graphic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity4">
@@ -10,61 +11,87 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="413dp"
-        android:layout_height="351dp"
+        android:layout_width="412dp"
+        android:layout_height="307dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068">
+        app:layout_constraintVertical_bias="0.304">
 
         <TextView
             android:id="@+id/tex3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textAlignment="center"
+            android:textColor="@color/ivory"
+            android:textSize="20sp" />
 
     </ScrollView>
 
     <EditText
         android:id="@+id/cityEditText"
-        android:layout_width="409dp"
-        android:layout_height="43dp"
-        android:ems="10"
+        android:layout_width="379dp"
+        android:layout_height="53dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="#99000000"
+        android:gravity="center"
+        android:hint="Enter the City"
         android:inputType="text"
-        android:hint="Enter City Name"
+        android:layerType="hardware"
+        android:textColorHint="@color/ivory"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.611" />
+        app:layout_constraintVertical_bias="0.84" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="164dp"
-        android:layout_height="59dp"
+        android:layout_width="261dp"
+        android:layout_height="62dp"
+        android:backgroundTint="@color/Searchbutton"
+        android:backgroundTintMode="add"
         android:text="Search"
+        android:textColor="@color/ivory"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.893"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        app:layout_constraintVertical_bias="0.965" />
 
     <Button
         android:id="@+id/open_calendar_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="109dp"
+        android:layout_height="62dp"
+        android:backgroundTint="@color/date"
+        android:backgroundTintMode="add"
         android:text="Select Date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.718" />
+        app:layout_constraintVertical_bias="0.965" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="35dp"
+        android:layout_height="29dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.018"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        app:srcCompat="?attr/homeAsUpIndicator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

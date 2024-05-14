@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
         if (hour>6&&hour<=18){
             search.setBackgroundTintList(ColorStateList.valueOf(marine));
-            act1.setBackgroundResource(R.drawable.day);
+            act1.setBackgroundResource(R.drawable.sun);
             search.setTextColor(Color.WHITE);
             title.setTextColor(ColorStateList.valueOf(bwhite));
             calculate.setBackgroundTintList(ColorStateList.valueOf(mblack));
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MainActivity4.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slidein, R.anim.slideout);
                 startActivity(intent);
             }
         });
