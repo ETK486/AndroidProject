@@ -293,7 +293,7 @@ public class MainActivity2 extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour > 6 && hour <= 18) {
             Log.d("datework", String.valueOf(hour));
-            act.setBackgroundResource(R.drawable.day);
+            act.setBackgroundResource(R.drawable.sun);
             int blacktinted = Color.parseColor("#80000000");
             tview.setTextColor(Color.WHITE);
             tview.setBackgroundTintList(ColorStateList.valueOf(blacktinted));
