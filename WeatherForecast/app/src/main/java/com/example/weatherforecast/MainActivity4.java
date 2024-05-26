@@ -1,13 +1,11 @@
 package com.example.weatherforecast;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +23,6 @@ public class MainActivity4 extends AppCompatActivity {
     EditText cityEditText, dateEditText;
     Button searchButton;
     TextView tex;
-    ImageButton backbut;
     String selectedDate;
 
     @Override
@@ -41,7 +38,6 @@ public class MainActivity4 extends AppCompatActivity {
         tex = findViewById(R.id.tex3);
         cityEditText = findViewById(R.id.cityEditText);
         searchButton = findViewById(R.id.button2);
-        backbut=findViewById(R.id.imageButton3);
         Button openCalendarButton = findViewById(R.id.open_calendar_button);
         openCalendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,15 +66,6 @@ public class MainActivity4 extends AppCompatActivity {
 
         });
 
-        backbut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity4.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slidein, R.anim.slideout);
-                startActivity(intent);
-            }
-        });
         searchButton.setOnClickListener(v -> {
             String cityName = cityEditText.getText().toString();
 

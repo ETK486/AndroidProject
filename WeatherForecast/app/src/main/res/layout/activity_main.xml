@@ -44,7 +44,6 @@
 <!--        app:layout_constraintVertical_bias="0.04"-->
 <!--        app:srcCompat="@drawable/weather" />-->
 
-
     <Button
         android:id="@+id/button"
         android:layout_width="200dp"
@@ -60,11 +59,11 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.729" />
 
     <EditText
         android:id="@+id/editTextText"
-        android:layout_width="match_parent"
+        android:layout_width="404dp"
         android:layout_height="59dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -80,9 +79,11 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.638" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/calcbutton"
@@ -94,7 +95,7 @@
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
+        app:layout_constraintVertical_bias="0.962"
         app:srcCompat="@drawable/icons8_calculator_250" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -108,7 +109,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976"
-        app:srcCompat="@drawable/databaseicon" />
+        app:srcCompat="@android:drawable/arrow_up_float" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
