@@ -8,6 +8,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,12 +31,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
@@ -40,8 +47,11 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
 class DBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "weather_database";
@@ -278,6 +288,9 @@ public class MainActivity2 extends AppCompatActivity {
     private final String url="https://api.openweathermap.org/data/2.5/weather";
     private final String apid="caa95405da3c122ede62d8692dc4c65e";
     ProgressBar prog;
+    private FirebaseFunctions mFunctions;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,7 +302,22 @@ public class MainActivity2 extends AppCompatActivity {
         act=findViewById(R.id.main2);
         prog=findViewById(R.id.progressbar);
         dbHelper = new DBHelper(this);
-        Calendar calendar = Calendar.getInstance();
+        mFunctions = FirebaseFunctions.getInstance();
+
+        if (getIntent() != null) {
+            latitude = getIntent().getDoubleExtra("latitude", 0.0);
+            longitude = getIntent().getDoubleExtra("longitude", 0.0);
+        }
+
+        Button sendButton = findViewById(R.id.button3);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendNotifications();
+            }
+        });
+
+    Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour > 6 && hour <= 18) {
             Log.d("datework", String.valueOf(hour));
@@ -321,7 +349,30 @@ public class MainActivity2 extends AppCompatActivity {
         Date date = new Date();
         return dateFormat.format(date);
     }
+    private void sendNotifications() {
+        callSendWeatherUpdatesFunction(latitude, longitude)
+                .addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<HttpsCallableResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(MainActivity2.this, "Notifications sent!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Exception e = task.getException();
+                            if (e != null) {
+                                Log.e("MainActivity2", e.getMessage(), e);
+                                Toast.makeText(MainActivity2.this, "Failed to send notifications.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
 
+    private Task<HttpsCallableResult> callSendWeatherUpdatesFunction(double lat, double lon) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("latitude", lat);
+        data.put("longitude", lon);
+        return mFunctions.getHttpsCallable("sendWeatherUpdates").call(data);
+    }
 
     // Method to retrieve intent extras and display in the TextView
     private void getWeatherDetails() {
